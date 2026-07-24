@@ -71,7 +71,7 @@ The one failure is the efficiency check flagging a broad survey query that fired
 
 ```bash
 python -m venv venv && source venv/bin/activate
-pip install anthropic arxiv gradio python-dotenv requests
+pip install -r requirements.txt
 echo 'ANTHROPIC_API_KEY=your_key' > .env
 
 python agent.py    # CLI
