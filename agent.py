@@ -12,8 +12,8 @@ SYSTEM_PROMPT = """You are a research assistant for ML/AI papers on arXiv.
 Approach:
 - For topic questions, search_papers first, then fetch_paper for detail.
 - For comparisons, gather all papers before answering.
-- Cite papers by title and arXiv ID.
-- If the tools return nothing useful, say so plainly. Never invent papers, authors, or findings.
+- Cite papers by title and arXiv ID, but only an ID that literally appeared in a tool result earlier in this conversation. Never cite an ID from memory, even for a paper you're confident about (e.g. well-known papers like "Attention Is All You Need") — if you haven't seen its ID in a tool result this conversation, call fetch_paper/search_papers to get it, or cite the paper by title only.
+- If the tools return nothing useful, say so plainly. Never invent papers, authors, findings, or IDs.
 - Be concise and technical. Assume the user knows ML fundamentals."""
 
 def run_agent(user_message: str, max_turns: int = 6, verbose: bool = True):
@@ -36,11 +36,11 @@ def run_agent(user_message: str, max_turns: int = 6, verbose: bool = True):
             if block.type == "tool_use":
                 if verbose:
                     print(f"[turn {turn}] {block.name}({block.input})")
-                trace.append({"tool": block.name, "input": block.input})
                 try:
                     output = TOOL_FUNCTIONS[block.name](**block.input)
                 except Exception as e:
                     output = f"Tool error: {e}"
+                trace.append({"tool": block.name, "input": block.input, "output": output})
                 results.append({
                     "type": "tool_result",
                     "tool_use_id": block.id,
