@@ -60,7 +60,7 @@ The one failure is the efficiency check flagging a broad survey query that fired
 
 **Grounding-check blind spots.** The arXiv ID regex matches only the post-2007 `YYMM.NNNNN` format, so pre-2007 IDs (`hep-th/9901001`) and papers cited by title only aren't covered by the grounding assertion.
 
-**Partial-failure in compare.** If one paper in a comparison fails to fetch, the run continues with partial data rather than signalling which paper was missing.
+**Partial-failure in compare.** If one paper in a comparison fails to fetch, `compare_papers` still names which ID failed — the error string from `fetch_paper` is joined in alongside the successful results. But there's no structural marker distinguishing a success block from a failure block; the model (or a human) has to parse prose to tell which paper came back and which didn't.
 
 ## Next steps
 
