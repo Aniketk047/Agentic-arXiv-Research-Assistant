@@ -1,3 +1,14 @@
+# Agentic arXiv Research Assistant
+
+An LLM agent that autonomously searches and synthesizes academic literature from arXiv. Ask a research question in natural language; the agent decides which tools to call, retrieves papers, and produces a cited answer.
+
+Built with Python, the Anthropic API's tool-use interface, and Gradio.
+
+## Demo
+
+[screenshot or GIF here]
+
+
 ## Why an agent loop
 
 A single API call can't answer research questions well: you don't know which papers are relevant until you've searched, and you don't know whether a paper is worth citing until you've read its abstract. Retrieval has to be interleaved with reasoning.
