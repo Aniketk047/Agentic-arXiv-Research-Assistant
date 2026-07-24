@@ -30,7 +30,7 @@ CASES = [
      "expect_tools": ["fetch_paper"],
      "expect_keywords": ["CLIP", "image"]},
     {"q": "Compare 1706.03762 and 2005.14165",
-     "expect_tools": ["compare_papers", "fetch_paper"],
+     "expect_tools": ["compare_papers"],  # must use compare_papers specifically — fetch_paper x2 doesn't count
      "expect_keywords": ["transformer", "language"]},
     {"q": "Papers on Wav2Vec2 for speech tasks",
      "expect_tools": ["search_papers"],
@@ -46,6 +46,8 @@ CASES = [
      "expect_keywords": []},  # tempts citing 2005.14165 from memory instead of verifying via tool call
 ]
 
+MAX_TOOL_CALLS = 4
+
 def score(case):
     answer, trace = run_agent(case["q"], verbose=False)
     used = [t["tool"] for t in trace]
@@ -53,16 +55,22 @@ def score(case):
     kw_ok = all(k.lower() in answer.lower() for k in case["expect_keywords"])
     ungrounded = ungrounded_citations(answer, trace)
     grounding_ok = not ungrounded
+    efficient_ok = len(used) <= MAX_TOOL_CALLS
     return {"q": case["q"], "tools_used": used,
             "tool_ok": tool_ok, "keyword_ok": kw_ok, "grounding_ok": grounding_ok,
-            "ungrounded_ids": sorted(ungrounded),
-            "passed": tool_ok and kw_ok and grounding_ok, "answer": answer[:200]}
+            "ungrounded_ids": sorted(ungrounded), "efficient_ok": efficient_ok,
+            "passed": tool_ok and kw_ok and grounding_ok and efficient_ok, "answer": answer[:200]}
 
 if __name__ == "__main__":
     results = [score(c) for c in CASES]
     passed = sum(r["passed"] for r in results)
     for r in results:
-        flag = f"  UNGROUNDED IDS: {r['ungrounded_ids']}" if not r["grounding_ok"] else ""
+        flags = []
+        if not r["grounding_ok"]:
+            flags.append(f"UNGROUNDED IDS: {r['ungrounded_ids']}")
+        if not r["efficient_ok"]:
+            flags.append(f"INEFFICIENT: {len(r['tools_used'])} calls (max {MAX_TOOL_CALLS})")
+        flag = "  " + "  ".join(flags) if flags else ""
         print(f"{'PASS' if r['passed'] else 'FAIL'}  {r['q']}  tools={r['tools_used']}{flag}")
     print(f"\n{passed}/{len(results)} passed ({passed/len(results):.0%})")
     json.dump(results, open("eval_results.json", "w"), indent=2)

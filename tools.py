@@ -1,11 +1,44 @@
+import time
+import requests
 import arxiv
+
+MAX_RETRIES = 3
+RETRY_BACKOFF_SECONDS = 1.5
+
+# Network/HTTP failures worth retrying. arxiv.Client already retries some of
+# these internally, but only up to its own default count and not on plain
+# timeouts — this wrapper adds explicit, visible retries on top and is what
+# decides when to finally give up and hand back an error string instead of
+# letting the exception propagate into the agent loop.
+RETRYABLE_ERRORS = (arxiv.HTTPError, arxiv.UnexpectedEmptyPageError, requests.exceptions.RequestException)
+
+def _call_with_retries(fn):
+    last_error = None
+    for attempt in range(MAX_RETRIES):
+        try:
+            return fn()
+        except RETRYABLE_ERRORS as e:
+            last_error = e
+            if attempt < MAX_RETRIES - 1:
+                time.sleep(RETRY_BACKOFF_SECONDS * (2 ** attempt))
+    raise last_error
+
+def _arxiv_error_message(action: str, e: Exception) -> str:
+    return (f"arXiv {action} failed after {MAX_RETRIES} attempts due to a network/HTTP "
+            f"error ({type(e).__name__}: {e}). This data is currently unavailable — "
+            f"tell the user the lookup failed rather than guessing at paper details.")
 
 def search_papers(query: str, max_results: int = 5) -> str:
     client = arxiv.Client()
     search = arxiv.Search(query=query, max_results=max_results,
                           sort_by=arxiv.SortCriterion.Relevance)
+    try:
+        results = _call_with_retries(lambda: list(client.results(search)))
+    except RETRYABLE_ERRORS as e:
+        return _arxiv_error_message("search", e)
+
     out = []
-    for r in client.results(search):
+    for r in results:
         out.append(
             f"ID: {r.entry_id.split('/')[-1]}\n"
             f"Title: {r.title}\n"
@@ -18,9 +51,11 @@ def search_papers(query: str, max_results: int = 5) -> str:
 def fetch_paper(paper_id: str) -> str:
     client = arxiv.Client()
     try:
-        r = next(client.results(arxiv.Search(id_list=[paper_id])))
+        r = _call_with_retries(lambda: next(client.results(arxiv.Search(id_list=[paper_id]))))
     except StopIteration:
         return f"No paper with ID {paper_id}."
+    except RETRYABLE_ERRORS as e:
+        return _arxiv_error_message(f"fetch of {paper_id}", e)
     return (f"Title: {r.title}\n"
             f"Authors: {', '.join(a.name for a in r.authors)}\n"
             f"Published: {r.published.date()}\n"
