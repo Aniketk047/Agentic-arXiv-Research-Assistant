@@ -10,7 +10,7 @@ def chat(message, history):
 
 demo = gr.ChatInterface(
     fn=chat,
-    title="Research Paper Agent",
+    title="Agentic arXiv Research Assistant",
     description="Agentic arXiv search using Claude tool use. Ask about topics, specific papers, or comparisons.",
     examples=["Find recent papers on RAG evaluation",
               "What is 1706.03762 about?",
