@@ -61,7 +61,7 @@ TOOL_SCHEMAS = [
     },
     {
         "name": "compare_papers",
-        "description": "Fetch multiple papers at once for comparison. Use when the user asks how papers differ or relate.",
+        "description": "Fetch multiple arXiv papers in a single call for side-by-side comparison. ALWAYS use this instead of calling fetch_paper repeatedly when the user wants to compare, contrast, or relate two or more specific papers to each other.",
         "input_schema": {
             "type": "object",
             "properties": {"paper_ids": {"type": "string", "description": "Comma-separated arXiv IDs"}},
