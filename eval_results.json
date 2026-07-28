@@ -17,7 +17,7 @@
     "ungrounded_ids": [],
     "efficient_ok": false,
     "passed": false,
-    "answer": "Here is a curated overview of papers on **frequency-domain deepfake detection**, ranging from foundational to recent work:\n\n---\n\n## \ud83d\udce1 Frequency-Domain Deepfake Detection: Key Papers\n\n---\n\n### 1. \ud83d\udd2c Spa"
+    "answer": "Here is a curated overview of the most relevant papers on **frequency-domain deepfake detection**:\n\n---\n\n## \ud83d\udce1 Frequency-Domain Deepfake Detection \u2014 Key Papers\n\n---\n\n### 1. \ud83d\udd35 Spatial-Phase Shallow Lear"
   },
   {
     "q": "What is arXiv paper 2103.00020 about?",
@@ -30,7 +30,7 @@
     "ungrounded_ids": [],
     "efficient_ok": true,
     "passed": true,
-    "answer": "arXiv paper **2103.00020** is the **CLIP paper** \u2014 *\"Learning Transferable Visual Models From Natural Language Supervision\"* by Alec Radford, Jong Wook Kim, et al. from OpenAI (published February 2021"
+    "answer": "This is the **CLIP** paper \u2014 **\"Learning Transferable Visual Models From Natural Language Supervision\"** by Alec Radford, Jong Wook Kim, and colleagues at OpenAI (arXiv: **2103.00020**).\n\nHere's a sum"
   },
   {
     "q": "Compare 1706.03762 and 2005.14165",
@@ -43,22 +43,28 @@
     "ungrounded_ids": [],
     "efficient_ok": true,
     "passed": true,
-    "answer": "Here's a detailed comparison of these two landmark NLP papers:\n\n---\n\n## \ud83d\udcc4 Paper 1: \"Attention Is All You Need\" (1706.03762)\n**Vaswani et al., 2017**\n\n## \ud83d\udcc4 Paper 2: \"Language Models are Few-Shot Learne"
+    "answer": "Here's a detailed comparison of the two landmark NLP papers:\n\n---\n\n## \ud83d\udcc4 Attention Is All You Need (1706.03762)\n**Vaswani et al., 2017**\n\n## vs.\n\n## \ud83d\udcc4 Language Models are Few-Shot Learners \u2014 GPT-3 (200"
   },
   {
     "q": "Papers on Wav2Vec2 for speech tasks",
     "tools_used": [
       "search_papers",
       "search_papers",
-      "search_papers"
+      "search_papers",
+      "fetch_paper",
+      "fetch_paper",
+      "fetch_paper",
+      "search_papers",
+      "fetch_paper",
+      "fetch_paper"
     ],
     "tool_ok": true,
     "keyword_ok": true,
     "grounding_ok": true,
     "ungrounded_ids": [],
-    "efficient_ok": true,
-    "passed": true,
-    "answer": "Here's a curated overview of key papers on **Wav2Vec 2.0** and its applications to speech tasks:\n\n---\n\n## \ud83c\udfdb\ufe0f Foundational Paper\n\n### 1. **wav2vec 2.0: A Framework for Self-Supervised Learning of Speec"
+    "efficient_ok": false,
+    "passed": false,
+    "answer": "Here's a curated overview of key papers on **Wav2Vec2 for speech tasks**:\n\n---\n\n## \ud83c\udf99\ufe0f Wav2Vec 2.0: Core & Extensions\n\n### 1. **Wav2vec-C: A Self-supervised Model for Speech Representation Learning**\n\ud83d\udcc4"
   },
   {
     "q": "Who invented the telephone?",
@@ -69,7 +75,7 @@
     "ungrounded_ids": [],
     "efficient_ok": true,
     "passed": true,
-    "answer": "Alexander Graham Bell is widely credited with inventing the telephone. He was awarded the first patent for the telephone on March 7, 1876 (U.S. Patent No. 174,465). However, this has been a subject of"
+    "answer": "Alexander Graham Bell is widely credited with inventing the telephone. He was awarded the first patent for the telephone by the United States Patent Office on **March 7, 1876** (U.S. Patent No. 174,46"
   },
   {
     "q": "What's the arXiv ID for 'Attention Is All You Need'?",
@@ -84,7 +90,7 @@
     "ungrounded_ids": [],
     "efficient_ok": true,
     "passed": true,
-    "answer": "The arXiv ID for **\"Attention Is All You Need\"** (Vaswani et al., 2017) is:\n\n> **`1706.03762`**\n\nThis is the landmark paper introducing the **Transformer architecture**, which proposed using self-atte"
+    "answer": "The arXiv ID for **\"Attention Is All You Need\"** (Vaswani et al., 2017) is:\n\n> **`1706.03762`**\n\nThis is the landmark paper introducing the **Transformer architecture**, based solely on attention mech"
   },
   {
     "q": "What's the arXiv ID for the GPT-3 paper, 'Language Models are Few-Shot Learners'?",
@@ -98,6 +104,19 @@
     "ungrounded_ids": [],
     "efficient_ok": true,
     "passed": true,
-    "answer": "Found it! The arXiv ID for **\"Language Models are Few-Shot Learners\"** (the GPT-3 paper) by Tom B. Brown, Benjamin Mann, Nick Ryder, et al. (OpenAI) is:\n\n**`2005.14165`**\n\nYou can access it at: https:"
+    "answer": "Found it! The arXiv ID for the GPT-3 paper, **\"Language Models are Few-Shot Learners\"** by Tom B. Brown, Benjamin Mann, Nick Ryder, et al. (OpenAI), is:\n\n**`2005.14165`**"
+  },
+  {
+    "q": "What dataset and optimizer did the paper 1706.03762 use for training?",
+    "tools_used": [
+      "get_paper_text"
+    ],
+    "tool_ok": true,
+    "keyword_ok": true,
+    "grounding_ok": true,
+    "ungrounded_ids": [],
+    "efficient_ok": true,
+    "passed": true,
+    "answer": "Here are the training details for **\"Attention Is All You Need\"** (arXiv: 1706.03762):\n\n---\n\n### \ud83d\udce6 Datasets\n- **WMT 2014 English-German**: ~4.5 million sentence pairs, encoded with byte-pair encoding "
   }
 ]

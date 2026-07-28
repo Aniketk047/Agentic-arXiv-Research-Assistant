@@ -2,7 +2,17 @@ import json
 import re
 from agent import run_agent
 
-ARXIV_ID_RE = re.compile(r"\b(\d{4}\.\d{4,5})(?:v\d+)?\b")
+# Legacy arXiv archives (pre-2007 IDs like hep-th/9901001, math.GT/0309136).
+# Anchored to this fixed, finite list rather than any lowercase word — an
+# open-ended [a-z][a-z-]* prefix also matches unrelated "word/1234567" shapes
+# like GitHub issue URLs or asset paths.
+_OLD_ARCHIVES = (
+    r"astro-ph|cond-mat|gr-qc|hep-ex|hep-lat|hep-ph|hep-th|math-ph|nlin|"
+    r"nucl-ex|nucl-th|physics|quant-ph|math|cs|q-bio"
+)
+ARXIV_ID_RE = re.compile(
+    rf"\b(\d{{4}}\.\d{{4,5}}|(?:{_OLD_ARCHIVES})(?:\.[A-Z]{{2,4}})?/\d{{7}})(?:v\d+)?\b"
+)
 
 def extract_ids(text: str) -> set:
     # arxiv.py's entry_id (used in tools.py) includes a version suffix like
@@ -44,6 +54,9 @@ CASES = [
     {"q": "What's the arXiv ID for the GPT-3 paper, 'Language Models are Few-Shot Learners'?",
      "expect_tools": ["search_papers", "fetch_paper"],
      "expect_keywords": []},  # tempts citing 2005.14165 from memory instead of verifying via tool call
+    {"q": "What dataset and optimizer did the paper 1706.03762 use for training?",
+     "expect_tools": ["get_paper_text"],
+     "expect_keywords": ["Adam"]},  # abstract can't answer this -> must retrieve full text
 ]
 
 MAX_TOOL_CALLS = 4
