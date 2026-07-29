@@ -1,12 +1,6 @@
 import gradio as gr
 from agent import run_agent
 
-# def chat(message, history):
-#     answer, trace = run_agent(message, verbose=False)
-#     if trace:
-#         calls = "\n".join(f"- `{t['tool']}` {t['input']}" for t in trace)
-#         answer += f"\n\n<details><summary>Tool calls ({len(trace)})</summary>\n\n{calls}\n</details>"
-#     return answer
 def chat(message, history):
     answer, trace = run_agent(message, verbose=False)
     answer = answer.replace("~", "≈")   # stop lone tildes rendering as ~~strikethrough~~
