@@ -1,7 +1,7 @@
-anthropic==0.120.0
+anthropic==0.119.0
 arxiv==4.0.0
-python-dotenv==0.21.0
-requests==2.32.3
-gradio==4.29.0
-aiofiles==23.2.1
-pypdf
+python-dotenv==1.2.2
+requests==2.33.1
+gradio==6.20.0
+aiofiles==25.1.0
+pypdf==6.14.2
